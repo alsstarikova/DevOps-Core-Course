@@ -1,0 +1,36 @@
+replicaCount: 3
+
+image:
+  tag: "1.0.0"
+
+appConfig:
+  environment: "prod"
+  logLevel: "WARN"
+
+persistence:
+  size: 1Gi
+  storageClass: ""
+
+resources:
+  requests:
+    cpu: "200m"
+    memory: "256Mi"
+  limits:
+    cpu: "500m"
+    memory: "512Mi"
+
+service:
+  type: LoadBalancer
+
+livenessProbe:
+  initialDelaySeconds: 30
+  periodSeconds: 5
+
+readinessProbe:
+  initialDelaySeconds: 10
+  periodSeconds: 3
+
+secrets:
+  data:
+    username: "change-me"
+    password: "change-me"
