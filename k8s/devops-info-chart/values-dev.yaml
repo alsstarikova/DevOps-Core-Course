@@ -1,0 +1,37 @@
+replicaCount: 1
+
+image:
+  tag: "latest"
+
+appConfig:
+  environment: "dev"
+  logLevel: "DEBUG"
+
+persistence:
+  size: 100Mi
+  storageClass: ""
+
+resources:
+  requests:
+    cpu: "50m"
+    memory: "64Mi"
+  limits:
+    cpu: "100m"
+    memory: "128Mi"
+
+service:
+  type: NodePort
+  nodePort: 30081
+
+livenessProbe:
+  initialDelaySeconds: 5
+  periodSeconds: 10
+
+readinessProbe:
+  initialDelaySeconds: 3
+  periodSeconds: 5
+
+secrets:
+  data:
+    username: "change-me"
+    password: "change-me"
