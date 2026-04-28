@@ -1,0 +1,57 @@
+replicaCount: 1
+
+image:
+  tag: "latest"
+
+appConfig:
+  environment: "dev"
+  logLevel: "DEBUG"
+
+persistence:
+  size: 100Mi
+  storageClass: ""
+
+resources:
+  requests:
+    cpu: "50m"
+    memory: "64Mi"
+  limits:
+    cpu: "100m"
+    memory: "128Mi"
+
+service:
+  type: NodePort
+  nodePort: 30081
+
+rollout:
+  enabled: true
+  strategy: canary
+  canary:
+    maxSurge: 25%
+    maxUnavailable: 0
+    steps:
+      - setWeight: 20
+      - pause: {}
+      - setWeight: 40
+      - pause:
+          duration: 30s
+      - setWeight: 60
+      - pause:
+          duration: 30s
+      - setWeight: 80
+      - pause:
+          duration: 30s
+      - setWeight: 100
+
+livenessProbe:
+  initialDelaySeconds: 5
+  periodSeconds: 10
+
+readinessProbe:
+  initialDelaySeconds: 3
+  periodSeconds: 5
+
+secrets:
+  data:
+    username: "change-me"
+    password: "change-me"
